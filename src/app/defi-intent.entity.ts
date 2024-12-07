@@ -2,15 +2,14 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 @Schema({ collection: 'defi-intent' })
-export class LiquidityEntity {
+export class DefiIntentEntity {
   @Prop() chainId: number;
   @Prop() protocolAddress: string;
   @Prop() liquidityAmount: string;
   @Prop() liquidityToken: string;
-  @Prop() userSignature: string;
-  @Prop() tokenAddress: string;
+  @Prop() isProcessed: boolean;
 }
 
-export type LiquidityDocument = LiquidityEntity & Document;
+export type DefiIntentDocument = DefiIntentEntity & Document;
 
-export const LiquiditySchema = SchemaFactory.createForClass(LiquidityEntity);
+export const DefiIntentSchema = SchemaFactory.createForClass(DefiIntentEntity);

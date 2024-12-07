@@ -18,6 +18,13 @@ type InputAddLiquidity = {
   chainId: number;
 };
 
+export type DefiIntent = {
+  chainId: number;
+  protocolAddress: string;
+  liquidityAmount: string;
+  liquidityToken: string;
+};
+
 type GetAll = {
   userAddress: string;
 };
@@ -35,7 +42,23 @@ export class AppController {
     ) {
       throw new Error('Invalid address');
     }
+    console.log(`[*] Adding Liquidity for USDC To LAP by ${form.userAddress} `);
     return this.appService.saveLiquidity(form);
+  }
+
+  @Post('/create-defi-intent')
+  async createDefiIntent(@Body() form: DefiIntent) {
+    return this.appService.createDefiIntent(form);
+  }
+
+  @Get('/pending-defi-intents')
+  async getPendingDefiIntents() {
+    return this.appService.getDefiIntents();
+  }
+
+  @Post('/process-defi-intent')
+  async processDefiIntent(@Body('id') id: string) {
+    return this.appService.processDefiIntent(id);
   }
 
   @Get('/get-liquidity')

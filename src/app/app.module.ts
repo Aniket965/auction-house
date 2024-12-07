@@ -6,6 +6,7 @@ import { LiquidityEntity, LiquiditySchema } from './liquidity-account.entity';
 import { ConfigModule } from '@nestjs/config';
 
 import { ScheduleModule } from '@nestjs/schedule';
+import { DefiIntentEntity, DefiIntentSchema } from './defi-intent.entity';
 
 const dynamicDependencies = [];
 
@@ -26,12 +27,14 @@ if (process.env.DISABLE_CRONS != 'true') {
         name: LiquidityEntity.name,
         schema: LiquiditySchema,
       },
+      {
+        name: DefiIntentEntity.name,
+        schema: DefiIntentSchema,
+      },
     ]),
     ...dynamicDependencies,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

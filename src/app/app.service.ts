@@ -1,18 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import BigNumber from 'bignumber.js';
-import { encodePacked, Hex, isAddress } from 'viem';
 import { InjectModel } from '@nestjs/mongoose';
-import {
-  LiquidityDocument,
-  LiquidityEntity
-} from './liquidity-account.entity';
+import { LiquidityDocument, LiquidityEntity } from './liquidity-account.entity';
 import { Model } from 'mongoose';
+import { DefiIntent } from './app.controller';
+import { DefiIntentDocument, DefiIntentEntity } from './defi-intent.entity';
 
 @Injectable()
 export class AppService {
   constructor(
     @InjectModel(LiquidityEntity.name)
     private liquidityModel: Model<LiquidityDocument>,
+    @InjectModel(DefiIntentEntity.name)
+    private defiIntentModel: Model<DefiIntentDocument>,
   ) {}
 
   async saveLiquidity({
@@ -22,7 +21,8 @@ export class AppService {
     tokenAddress,
     userSignature,
     chainId,
-  }) { // Add type for the input
+  }) {
+    // Add type for the input
     const liquidityAccount = new this.liquidityModel({
       userAddress,
       walletAddress,
@@ -34,16 +34,55 @@ export class AppService {
     return liquidityAccount.save();
   }
 
-  async getLiquidity({userAddress}) { // Get liquidity by user address
-    const liquidityAccounts = await this.liquidityModel.find({
-      userAddress: userAddress
-    }).exec();
+  async createDefiIntent({
+    chainId,
+    protocolAddress,
+    liquidityAmount,
+    liquidityToken,
+  }: DefiIntent) {
+    const defiIntent = new this.defiIntentModel({
+      chainId,
+      protocolAddress,
+      liquidityAmount,
+      liquidityToken,
+      isProcessed: false,
+    });
+    return defiIntent.save();
+  }
+
+  async getDefiIntents() {
+    const defiIntents = await this.defiIntentModel
+      .find({
+        isProcessed: false,
+      })
+      .exec();
+    return defiIntents;
+  }
+
+  async processDefiIntent(defiIntentId: string) {
+    const defiIntent = await this.defiIntentModel.findById(defiIntentId).exec();
+    if (!defiIntent) {
+      throw new NotFoundException(
+        `Defi intent not found with id ${defiIntentId}`,
+      );
+    }
+    defiIntent.isProcessed = true;
+    return defiIntent.save();
+  }
+
+  async getLiquidity({ userAddress }) {
+    // Get liquidity by user address
+    const liquidityAccounts = await this.liquidityModel
+      .find({
+        userAddress: userAddress,
+      })
+      .exec();
 
     if (!liquidityAccounts || liquidityAccounts.length === 0) {
       throw new NotFoundException(`No liquidity found for user ${userAddress}`);
     }
     return liquidityAccounts;
-  }  
+  }
 
   async getAllLiquidity() {
     const liquidityAccounts = await this.liquidityModel.find().exec();
