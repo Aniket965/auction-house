@@ -28,7 +28,7 @@ export class AppService {
       walletAddress,
       amount,
       tokenAddress,
-      signature: userSignature,
+      userSignature,
       chainId,
     });
     return liquidityAccount.save();

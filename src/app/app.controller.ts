@@ -35,14 +35,6 @@ export class AppController {
 
   @Post('/add-liqudity')
   async addLiquidity(@Body() form: InputAddLiquidity) {
-    if (
-      !isAddress(form.userAddress) ||
-      !isAddress(form.walletAddress) ||
-      !isAddress(form.tokenAddress)
-    ) {
-      throw new Error('Invalid address');
-    }
-    console.log(`[*] Adding Liquidity for USDC To LAP by ${form.userAddress} `);
     return this.appService.saveLiquidity(form);
   }
 
