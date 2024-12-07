@@ -25,9 +25,10 @@ export class AppController {
   async addLiquidity(
     @Body() form: InputAddLiquidity
   ) {
-    if(!isAddress(form.userAddress) || !isAddress(form.walletAddress) || !isAddress(form.tokenAddress)){
-      throw new Error('Invalid address');
-    }
+    // if(!isAddress(form.userAddress) || !isAddress(form.walletAddress) || !isAddress(form.tokenAddress)){
+    //   throw new Error('Invalid address');
+    // }
+    console.log({form})
   return this.appService.saveLiquidity(form);
   }
 
