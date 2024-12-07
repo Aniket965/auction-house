@@ -1,13 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema({ collection: 'liquidity-model' })
+@Schema({ collection: 'defi-intent' })
 export class LiquidityEntity {
   @Prop() chainId: number;
-  @Prop() userAddress: string;
-  @Prop() walletAddress: string;
-  @Prop() amount: string;
-  @Prop() userSingature: string;
+  @Prop() protocolAddress: string;
+  @Prop() liquidityAmount: string;
+  @Prop() liquidityToken: string;
+  @Prop() userSignature: string;
   @Prop() tokenAddress: string;
 }
 
