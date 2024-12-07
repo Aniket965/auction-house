@@ -1,0 +1,6 @@
+export enum TransactionStatus {
+  NOT_PICKED_UP = 'NOT_PICKED_UP',
+  READY_TO_BE_RELAYED = 'READY_TO_BE_RELAYED',
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+}
