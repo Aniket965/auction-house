@@ -2,12 +2,8 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RechargeTaskEntity, RechargeTaskSchema } from './recharge-task.entity';
+import { LiquidityEntity, LiquiditySchema } from './liquidity-account.entity';
 import { ConfigModule } from '@nestjs/config';
-import {
-  TransactionEntity,
-  TransactionSchema,
-} from '../models/Transaction.model';
 
 import { ScheduleModule } from '@nestjs/schedule';
 
@@ -27,12 +23,8 @@ if (process.env.DISABLE_CRONS != 'true') {
     }),
     MongooseModule.forFeature([
       {
-        name: RechargeTaskEntity.name,
-        schema: RechargeTaskSchema,
-      },
-      {
-        name: TransactionEntity.name,
-        schema: TransactionSchema,
+        name: LiquidityEntity.name,
+        schema: LiquiditySchema,
       },
     ]),
     ...dynamicDependencies,
