@@ -52,7 +52,7 @@ export class AppService {
 
   async getDefiIntents() {
     const defiIntents = await this.defiIntentModel
-      .find({
+      .where({
         isProcessed: false,
       })
       .exec();
